@@ -210,11 +210,13 @@ document.getElementById('option2').addEventListener('click', function() {
 });
 
 document.getElementById('option3').addEventListener('click', function() {
+    console.log('选项2被点击');
     const uniqueGtLabels = [...new Set(gtLabels)];        
-    const GTLABELid = uniqueGtLabels.indexOf('bot');
+    const GTLABELid = uniqueGtLabels.indexOf('back');
     previous_selected_obj.material.color.set(COLORS4[GTLABELid]);
-    previous_selected_obj.userData.label = 'bot';
-    code_to_save = modifyNthGTLabel(code_to_save,parseInt(previous_selected_obj.userData.id,10),'bot')
+    previous_selected_obj.userData.label = 'back';
+    code_to_save = modifyNthGTLabel(code_to_save,parseInt(previous_selected_obj.userData.id,10),'back')
+    console.log(code_to_save)
     previous_selected_obj = null;
     previous_selected_color = null;
     contextMenu.style.display = 'none';  // 关闭菜单

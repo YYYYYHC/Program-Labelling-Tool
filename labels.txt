@@ -1,0 +1,7 @@
+table: top, leg
+
+airplane: body, wing, tail, engine
+
+chair: back, seat, leg, arm
+
+animal: head, body, tail, leg
