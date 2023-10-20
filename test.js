@@ -152,7 +152,7 @@ function onCodeChanged() {
                 const GTLABELid = uniqueGtLabels.indexOf(gtLabels[index]);
                 // console.log(cubeItem,translateItem,rotateItem)
                 const geometry = new THREE.SphereGeometry(1, 32, 32);  // 1是球体的半径
-                const material = new THREE.MeshBasicMaterial({ color: DEFAULT_COLOR }); // 绿色
+                const material = new THREE.MeshBasicMaterial({ color: COLORS4[GTLABELid] }); // 绿色
                 const sphereN = new THREE.Mesh(geometry, material);
 
                 // 缩放球体以创建椭圆
