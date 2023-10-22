@@ -34,6 +34,7 @@ document.getElementById('fileSelector').addEventListener('change', function(e) {
     const file = files[0]; // 获取选中的第一个文件
     cur_file_name = file.name;
     cur_file_id = 0;
+    const fileCount = files.length
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -41,6 +42,7 @@ document.getElementById('fileSelector').addEventListener('change', function(e) {
             obj.current_code = content;
             // console.log(content)
             // 更新HTML内容
+            document.getElementById('fileCount').textContent = "no."+cur_file_id;
             document.getElementById('fileContent').innerText = content;
         };
 
@@ -255,7 +257,8 @@ function onDocumentKeyDown(event) {
                     reader.onload = function(e) {
                         const content = e.target.result;
                         obj.current_code = content;
-                        console.log(obj);
+                        console.log(content);
+                        document.getElementById('fileCount').textContent = "no."+cur_file_id;
                         document.getElementById('fileContent').innerText = content;
                     };
             
@@ -274,6 +277,7 @@ function onDocumentKeyDown(event) {
                     reader.onload = function(e) {
                         const content = e.target.result;
                         obj.current_code = content;
+                        document.getElementById('fileCount').textContent = "no."+cur_file_id;
                         document.getElementById('fileContent').innerText = content;
                     };
             
