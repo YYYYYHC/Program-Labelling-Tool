@@ -10,7 +10,7 @@
 
 3. Visit the provided link.
 
-4. Select files.
+4. Select all the files you want to label.
 
 5. Menu:
 
@@ -67,4 +67,7 @@
 
 - After pressing 'q', the modified file will be saved to the default download directory of your browser. Change the default directory accordingly.
 
-- Codes are roughly labelled, download and refine them from https://uoe-my.sharepoint.com/:f:/g/personal/s2526104_ed_ac_uk/Es2wTq7eAzJElcivMYo_MUkBkGbWxmP6pI44Z5rnJOjDhA?e=tfvJKe
+- Download the labelled data and refine them if you want from (this link) [https://drive.google.com/file/d/1NfqRnPEafU0wSYYCJejLH5tpepTGZpEO/view?usp=sharing]
+
+
+

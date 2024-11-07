@@ -4,7 +4,32 @@ document.addEventListener('keydown', onDocumentKeyDown, false);
 
 const DEFAULT_COLOR = "#A9BFD3";
 const SELECTED_COLOR = "#FFB6C1";
-const COLORS4 = ['#1E3888', '#47A8BD', '#F5E663', '#FFAD69'];
+// const COLORS4 = ['#1E3888', '#47A8BD', '#F5E663', '#FFAD69'];
+const COLORS4 = [
+    "#FF5733", // 艳红
+    "#33FF57", // 明亮的绿色
+    "#5733FF", // 鲜艳的蓝色
+    "#FF33A6", // 粉红色
+    "#33A6FF", // 天蓝色
+    "#A633FF", // 紫色
+    "#FFA633", // 橙色
+    "#33FFA8", // 蓝绿色
+    "#A8FF33", // 黄绿色
+    "#FF33F1", // 玫瑰色
+    "#6633FF", // 深蓝色
+    "#FF6633", // 深红色
+    "#33FF66", // 浅绿色
+    "#66FF33", // 橄榄色
+    "#FF3366", // 桃红色
+    "#33F1FF", // 浅蓝色
+    "#F1FF33", // 鹅黄色
+    "#F133FF", // 浅紫色
+    "#33FFC8", // 青色
+    "#C8FF33"  // 酸橙色
+];
+
+// console.log(colors);
+
 const COLOROSCAD = ['1,0,0', '0,1,0', '0,0,1','0.5,0,0.5','0,0.5,0.5','0.5,0.5,0'];
 let colors = [];
 let cubes = [];
@@ -15,6 +40,7 @@ let rotates = [];
 let loaded_cubes = [];
 let _current_code = null;
 let code_to_save = null;
+let uniqueGtLabels = null;
 const obj = {
     get current_code() {
         return _current_code;
@@ -29,7 +55,6 @@ let cur_file_id = null;
 let cur_file_name = null;
 let files = null;
 document.getElementById('fileSelector').addEventListener('change', function(e) {
-    console.log(e.target.files);
     files = e.target.files;
     const file = files[0]; // 获取选中的第一个文件
     cur_file_name = file.name;
@@ -53,7 +78,6 @@ document.getElementById('fileSelector').addEventListener('change', function(e) {
 function onCodeChanged() {
     // 当文档加载完成后执行以下代码
             // 获取显示文本的<div>元素
-            console.log("changed!!!!!!!!");
             colors = [];
             cubes = [];
             scales = [];
@@ -77,8 +101,9 @@ function onCodeChanged() {
             }
 
             // 提取gt_label信息 (这个关键词在提供的文本中没有看到，但假设它的格式是gt_label([numbers]))
-            const gtLabelRegex = /\/\/gt label: (\w+)/g;
-            
+            // const gtLabelRegex = /\/\/gt label: ([\w\s+]+)/g;
+            const gtLabelRegex = /\/\/gt label: ([^\n]+)/g;
+
             while ((match = gtLabelRegex.exec(text)) !== null) {
                 gtLabels.push(match[1]);
             }
@@ -110,7 +135,6 @@ function onCodeChanged() {
             while ((match = scaleRegex.exec(text)) !== null) {
                 scales.push(match[1].split(',').map(s => parseFloat(s.trim())));
             }
-            console.log(scales);
             // const container = document.getElementById("textOutput");
 
             // gtLabels.forEach((label, index) => {
@@ -119,7 +143,7 @@ function onCodeChanged() {
             // container.appendChild(labelElement);
             // });
             // outputDiv.textContent = colors;
-            const uniqueGtLabels = [...new Set(gtLabels)];
+            uniqueGtLabels = [...new Set(gtLabels)];
             if(cubes.length==rotates.length){
                 cubes.forEach((cubeItem, index) =>{
                     const translateItem = translates[index];
@@ -127,6 +151,8 @@ function onCodeChanged() {
                     const GTLABELid = uniqueGtLabels.indexOf(gtLabels[index]);
                     // console.log(cubeItem,translateItem,rotateItem)
                     const geometry = new THREE.BoxGeometry( cubeItem[0],cubeItem[2], cubeItem[1] );
+                    let color = COLORS4[GTLABELid];
+                    
                     const material = new THREE.MeshBasicMaterial( { color: COLORS4[GTLABELid] } );
                     const cubeN = new THREE.Mesh( geometry, material );
                     // if(index==0){
@@ -134,7 +160,7 @@ function onCodeChanged() {
                     cubeN.userData.label = gtLabels[index];
                     cubeN.castShadow = true;
                     cubeN.receiveShadow = true;
-                    console.log(cubeN);
+                    
                     scene.add(cubeN);
                     loaded_cubes.push(cubeN)
                     // }        
@@ -165,7 +191,7 @@ function onCodeChanged() {
                 sphereN.userData.label = gtLabels[index];
                 sphereN.castShadow = true;
                 sphereN.receiveShadow = true;
-                console.log(sphereN);
+                // console.log(sphereN);
                 scene.add(sphereN);
                 loaded_cubes.push(sphereN)
                 // }        
@@ -182,42 +208,75 @@ function onCodeChanged() {
 };
 
 
-
+let opt1 = document.getElementById("option1").textContent;
 document.getElementById('option1').addEventListener('click', function() {
     // console.log('选项1被点击');
     //to leg
-    const uniqueGtLabels = [...new Set(gtLabels)];        
-    const GTLABELid = uniqueGtLabels.indexOf('leg');
+    // const uniqueGtLabels = [...new Set(gtLabels)];        
+    const GTLABELid = uniqueGtLabels.indexOf(opt1);
     previous_selected_obj.material.color.set(COLORS4[GTLABELid]);
+    console.log("*******");
+    console.log(uniqueGtLabels);
+    console.log(GTLABELid);
+    // previous_selected_obj.material.color.set(DEFAULT_COLOR);
     console.log(previous_selected_obj.userData);
-    previous_selected_obj.userData.label = 'leg';
-    code_to_save  = modifyNthGTLabel(code_to_save,parseInt(previous_selected_obj.userData.id,10),'leg')
+    previous_selected_obj.userData.label = opt1;
+    code_to_save  = modifyNthGTLabel(code_to_save,parseInt(previous_selected_obj.userData.id,10),opt1)
     console.log(code_to_save)
     previous_selected_obj = null;
     previous_selected_color = null;
     contextMenu.style.display = 'none';  // 关闭菜单
 });
-
+let opt2 = document.getElementById("option2").textContent;
 document.getElementById('option2').addEventListener('click', function() {
     console.log('选项2被点击');
-    const uniqueGtLabels = [...new Set(gtLabels)];        
-    const GTLABELid = uniqueGtLabels.indexOf('top');
+    // const uniqueGtLabels = [...new Set(gtLabels)];        
+    const GTLABELid = uniqueGtLabels.indexOf(opt2);
     previous_selected_obj.material.color.set(COLORS4[GTLABELid]);
-    previous_selected_obj.userData.label = 'top';
-    code_to_save = modifyNthGTLabel(code_to_save,parseInt(previous_selected_obj.userData.id,10),'top')
+    previous_selected_obj.userData.label = opt2;
+    code_to_save = modifyNthGTLabel(code_to_save,parseInt(previous_selected_obj.userData.id,10),opt2)
     console.log(code_to_save)
     previous_selected_obj = null;
     previous_selected_color = null;
     contextMenu.style.display = 'none';  // 关闭菜单
 });
 
+let opt3 = document.getElementById("option3").textContent;
 document.getElementById('option3').addEventListener('click', function() {
     console.log('选项2被点击');
-    const uniqueGtLabels = [...new Set(gtLabels)];        
-    const GTLABELid = uniqueGtLabels.indexOf('back');
+    // const uniqueGtLabels = [...new Set(gtLabels)];        
+    const GTLABELid = uniqueGtLabels.indexOf(opt3);
     previous_selected_obj.material.color.set(COLORS4[GTLABELid]);
-    previous_selected_obj.userData.label = 'back';
-    code_to_save = modifyNthGTLabel(code_to_save,parseInt(previous_selected_obj.userData.id,10),'back')
+    previous_selected_obj.userData.label = opt3;
+    code_to_save = modifyNthGTLabel(code_to_save,parseInt(previous_selected_obj.userData.id,10),opt3)
+    console.log(code_to_save)
+    previous_selected_obj = null;
+    previous_selected_color = null;
+    contextMenu.style.display = 'none';  // 关闭菜单
+});
+
+let opt4 = document.getElementById("option4").textContent;
+document.getElementById('option4').addEventListener('click', function() {
+    console.log('选项2被点击');
+    // const uniqueGtLabels = [...new Set(gtLabels)];        
+    const GTLABELid = uniqueGtLabels.indexOf(opt4);
+    previous_selected_obj.material.color.set(COLORS4[GTLABELid]);
+    previous_selected_obj.userData.label = opt4;
+    code_to_save = modifyNthGTLabel(code_to_save,parseInt(previous_selected_obj.userData.id,10),opt4)
+    console.log(code_to_save)
+    previous_selected_obj = null;
+    previous_selected_color = null;
+    contextMenu.style.display = 'none';  // 关闭菜单
+});
+
+let opt5 = document.getElementById("option5").textContent;
+document.getElementById('option4').addEventListener('click', function() {
+    console.log('选项2被点击');
+    // const uniqueGtLabels = [...new Set(gtLabels)];        
+    const GTLABELid = uniqueGtLabels.indexOf(opt5);
+    previous_selected_obj.material.color.set(COLORS4[GTLABELid]);
+    previous_selected_obj.userData.label = opt5;
+    code_to_save = modifyNthGTLabel(code_to_save,parseInt(previous_selected_obj.userData.id,10),opt5)
     console.log(code_to_save)
     previous_selected_obj = null;
     previous_selected_color = null;
