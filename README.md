@@ -67,7 +67,7 @@
 
 - After pressing 'q', the modified file will be saved to the default download directory of your browser. Change the default directory accordingly.
 
-- Download the labelled data and refine them if you want from (this link) [https://drive.google.com/file/d/1NfqRnPEafU0wSYYCJejLH5tpepTGZpEO/view?usp=sharing]
+- Download the labelled data and refine them if you want from [this link](https://drive.google.com/file/d/1NfqRnPEafU0wSYYCJejLH5tpepTGZpEO/view?usp=sharing)
 
 
 
